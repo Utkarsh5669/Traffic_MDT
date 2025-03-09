@@ -43,7 +43,7 @@ const Dashboard = () => {
       setError(null);
 
       try {
-        const response = await fetch("http://192.168.31.9:5000/api/events");
+        const response = await fetch("process.env.API_URL");
         if (!response.ok) {
           throw new Error(`Error: ${response.status} - ${response.statusText}`);
         }

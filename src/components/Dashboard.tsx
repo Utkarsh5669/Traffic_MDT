@@ -32,6 +32,10 @@ const Dashboard = () => {
   const [activeEventsModalOpen, setActiveEventsModalOpen] = useState(false);
   const [closedEventsModalOpen, setClosedEventsModalOpen] = useState(false);
 
+  const handleEChallanRedirect = () => {
+    window.open("https://echallan.parivahan.gov.in/", "_blank");
+  };
+
   useEffect(() => {
     const fetchActiveEvents = async () => {
       if (!activeEventsModalOpen || !user) return;
@@ -40,7 +44,9 @@ const Dashboard = () => {
       setError(null);
 
       try {
-        const response = await fetch(process.env.API_URL);
+        // const response = await fetch("http://192.168.31.9:5000/api/events");
+        const response = await fetch("http://localhost:5000/api/events");
+        // const response = await fetch("https://aacf-2409-4055-4e18-8796-79a7-9c84-8d0b-42d0.ngrok-free.app/api/events");
         if (!response.ok) {
           throw new Error(`Error: ${response.status} - ${response.statusText}`);
         }
@@ -78,6 +84,14 @@ const Dashboard = () => {
           <h2 className="text-xl font-bold mb-2">{user?.toUpperCase() || "Guest"}</h2>
           <div className="h-0.5 bg-white/20"></div>
         </div>
+          <button 
+            onClick={handleEChallanRedirect}
+            className="flex items-center space-x-3 w-full p-3 rounded hover:bg-slate-700 transition"
+          >
+            <FileText className="w-5 h-5" />
+            <span>Generate E-challan</span>
+          </button>
+
         <nav className="space-y-4">
           <button onClick={() => setActiveEventsModalOpen(true)} className="flex items-center space-x-3 w-full p-3 rounded hover:bg-slate-700 transition">
             <Clock className="w-5 h-5" />

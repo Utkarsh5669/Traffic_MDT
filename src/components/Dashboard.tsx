@@ -37,38 +37,38 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const fetchActiveEvents = async () => {
-      if (!activeEventsModalOpen || !user) return;
+  const fetchActiveEvents = async () => {
+    if (!activeEventsModalOpen || !user) return;
 
-      setIsLoading(true);
-      setError(null);
+    setIsLoading(true);
+    setError(null);
 
-      try {
-        // const response = await fetch("http://192.168.31.9:5000/api/events");
-        const response = await fetch(process.env.API_URL,
-         {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "true", // Bypass Ngrok warning page
-            },
-          });
-        // const response = await fetch("https://aacf-2409-4055-4e18-8796-79a7-9c84-8d0b-42d0.ngrok-free.app/api/events");
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} - ${response.statusText}`);
-        }
-        const data = await response.json();
-        setActiveEvents(data.events);
-      } catch (err) {
-        console.error("Fetch error:", err);
-        setError((err as Error).message);
-      } finally {
-        setIsLoading(false);
+    try {
+      const response = await fetch(import.meta.env.VITE_API_URL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "ngrok-skip-browser-warning": "true", // Bypass Ngrok warning page
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-    };
 
-    fetchActiveEvents();
-  }, [activeEventsModalOpen, user]);
+      const data = await response.json();
+      setActiveEvents(data.events);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      setError((err as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchActiveEvents();
+}, [activeEventsModalOpen, user]);
+
 
   const closeEvent = (event: Event) => {
     setActiveEvents(prev => prev.filter(e => e.id !== event.id));

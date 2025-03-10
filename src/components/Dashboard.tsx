@@ -45,7 +45,14 @@ const Dashboard = () => {
 
       try {
         // const response = await fetch("http://192.168.31.9:5000/api/events");
-        const response = await fetch("http://localhost:5000/api/events");
+        const response = await fetch(process.env.API_URL,
+         {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "ngrok-skip-browser-warning": "true", // Bypass Ngrok warning page
+            },
+          });
         // const response = await fetch("https://aacf-2409-4055-4e18-8796-79a7-9c84-8d0b-42d0.ngrok-free.app/api/events");
         if (!response.ok) {
           throw new Error(`Error: ${response.status} - ${response.statusText}`);
